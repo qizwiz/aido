@@ -76,7 +76,7 @@ export interface IDatabaseService {
 }
 
 export class DatabaseService implements IDatabaseService {
-  async saveProposal(content: string, specialty: string): Promise<Proposal> {
+  async saveProposal(_content: string, _specialty: string): Promise<Proposal> {
     // In a real implementation, this would save to the database
     throw new Error('Not implemented');
   }
@@ -86,27 +86,27 @@ export class DatabaseService implements IDatabaseService {
     throw new Error('Not implemented');
   }
 
-  async getProposal(id: string): Promise<Proposal | null> {
+  async getProposal(_id: string): Promise<Proposal | null> {
     // In a real implementation, this would fetch from the database
     throw new Error('Not implemented');
   }
 
-  async saveEvaluation(proposalId: string, score: number, explanation: string): Promise<Evaluation> {
+  async saveEvaluation(_proposalId: string, _score: number, _explanation: string): Promise<Evaluation> {
     // In a real implementation, this would save to the database
     throw new Error('Not implemented');
   }
 
-  async getEvaluations(proposalId: string): Promise<Evaluation[]> {
+  async getEvaluations(_proposalId: string): Promise<Evaluation[]> {
     // In a real implementation, this would fetch from the database
     throw new Error('Not implemented');
   }
 
-  async updateProposalStatus(proposalId: string, status: 'accepted' | 'rejected'): Promise<Proposal> {
+  async updateProposalStatus(_proposalId: string, _status: 'accepted' | 'rejected'): Promise<Proposal> {
     // In a real implementation, this would update the database
     throw new Error('Not implemented');
   }
 
-  async saveTask(description: string, agentId: string, explanation: string): Promise<Task> {
+  async saveTask(_description: string, _agentId: string, _explanation: string): Promise<Task> {
     // In a real implementation, this would save to the database
     throw new Error('Not implemented');
   }
@@ -116,7 +116,7 @@ export class DatabaseService implements IDatabaseService {
     throw new Error('Not implemented');
   }
 
-  async getPerformanceMetrics(dateRange?: DateRange): Promise<PerformanceMetrics> {
+  async getPerformanceMetrics(_dateRange?: DateRange): Promise<PerformanceMetrics> {
     // In a real implementation, this would calculate metrics from the database
     throw new Error('Not implemented');
   }

@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { OpenAIService } from '../../services/OpenAIService';
-import { DatabaseService, Proposal } from '../../services/DatabaseService';
+import { DatabaseService, Proposal, Evaluation } from '../../services/DatabaseService';
 
 interface DecisionMakingProps {
   proposalId: string;
-}
-
-interface Evaluation {
-  score: number;
-  explanation: string;
 }
 
 export const DecisionMaking: React.FC<DecisionMakingProps> = ({ proposalId }) => {
@@ -18,8 +13,8 @@ export const DecisionMaking: React.FC<DecisionMakingProps> = ({ proposalId }) =>
   const [isEvaluating, setIsEvaluating] = useState(false);
 
   // Initialize services
-  const openAI = new OpenAIService('dummy-key');
-  const database = new DatabaseService();
+  const openAI = useMemo(() => new OpenAIService('dummy-key'), []);
+  const database = useMemo(() => new DatabaseService(), []);
 
   useEffect(() => {
     const loadProposal = async () => {
@@ -36,7 +31,7 @@ export const DecisionMaking: React.FC<DecisionMakingProps> = ({ proposalId }) =>
     };
 
     loadProposal();
-  }, [proposalId]);
+  }, [proposalId, database]);
 
   const handleEvaluate = async () => {
     setError('');

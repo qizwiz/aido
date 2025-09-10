@@ -12,13 +12,13 @@ vi.mock('../../services/DatabaseService');
 describe('AgentNetwork', () => {
   // Setup our mocked dependencies
   const mockOpenAI = {
-    generateProposal: vi.fn().mockImplementation(async (topic: string, specialty: string) => {
+    generateProposal: vi.fn().mockImplementation(async (_topic: string, _specialty: string) => {
       return 'Generated proposal content';
     }),
   } as unknown as OpenAIService;
 
   const mockDatabase = {
-    saveProposal: vi.fn().mockImplementation(async (content: string, specialty: string) => {
+    saveProposal: vi.fn().mockImplementation(async (content: string, _specialty: string) => {
       return { id: '1', content: content };
     }),
     getAgents: vi.fn().mockResolvedValue([
@@ -160,7 +160,7 @@ describe('AgentNetwork', () => {
     expect(mockDatabase.getAgents).toHaveBeenCalled();
     
     // Verify agents are displayed in the specialty select
-    const specialtySelect = screen.getByLabelText('Agent Specialty');
+    expect(screen.getByLabelText('Agent Specialty')).toBeInTheDocument();
     expect(screen.getByText('Finance')).toBeInTheDocument();
     expect(screen.getByText('Operations')).toBeInTheDocument();
   });

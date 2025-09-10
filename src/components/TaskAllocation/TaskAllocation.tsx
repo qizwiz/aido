@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { OpenAIService } from '../../services/OpenAIService';
 import { DatabaseService, Agent, AgentWorkload } from '../../services/DatabaseService';
 
@@ -11,21 +11,21 @@ export const TaskAllocation: React.FC = () => {
   const [success, setSuccess] = useState('');
   const [isAllocating, setIsAllocating] = useState(false);
 
-  const openAI = new OpenAIService('dummy-key');
-  const database = new DatabaseService();
+  const openAI = useMemo(() => new OpenAIService('dummy-key'), []);
+  const database = useMemo(() => new DatabaseService(), []);
 
-  useEffect(() => {
-    loadAgents();
-  }, []);
-
-  const loadAgents = async () => {
+  const loadAgents = useCallback(async () => {
     try {
       const loadedAgents = await database.getAgents();
       setAgents(loadedAgents);
     } catch (err) {
       setError('Error loading agents');
     }
-  };
+  }, [database]);
+
+  useEffect(() => {
+    loadAgents();
+  }, [loadAgents]);
 
   const handleAgentClick = async (agent: Agent) => {
     setSelectedAgent(agent);
@@ -58,7 +58,7 @@ export const TaskAllocation: React.FC = () => {
       );
 
       // Save task allocation
-      const task = await database.saveTask(
+      await database.saveTask(
         taskDescription,
         match.agentId,
         match.explanation

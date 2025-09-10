@@ -27,11 +27,6 @@ import {
   ConstitutionalScores,
   ConstitutionalRules,
   ConstitutionalRulesetId,
-  AlignmentScore,
-  SafetyScore,
-  HarmlessnessScore,
-  HelpfulnessScore,
-  HonestyScore,
   Timestamp,
   AgentCount,
   ProposalId

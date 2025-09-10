@@ -14,7 +14,7 @@
  * This provides enterprise AI governance with mathematical certainty.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { DatabaseService, Proposal, Evaluation } from '../../services/DatabaseService';
 import { AIDOAssuranceService } from '../../services/FormalVerification';
 
@@ -72,17 +72,7 @@ export const EnhancedConsensusAlgorithm: React.FC<EnhancedConsensusAlgorithmProp
   const database = new DatabaseService();
   const assuranceService = new AIDOAssuranceService();
 
-  useEffect(() => {
-    loadProposalAndEvaluations();
-  }, [proposalId]);
-
-  useEffect(() => {
-    if (proposal && evaluations) {
-      runFormalVerification();
-    }
-  }, [proposal, evaluations]);
-
-  const loadProposalAndEvaluations = async () => {
+  const loadProposalAndEvaluations = useCallback(async () => {
     try {
       const [loadedProposal, loadedEvaluations] = await Promise.all([
         database.getProposal(proposalId),
@@ -103,7 +93,7 @@ export const EnhancedConsensusAlgorithm: React.FC<EnhancedConsensusAlgorithmProp
     } catch (err) {
       setError(`Error loading data: ${err instanceof Error ? err.message : 'Unknown error'}`);
     }
-  };
+  }, [proposalId, database]);
 
   const calculateMetrics = (evals: Evaluation[]) => {
     const scores = evals.map(e => e.score);
@@ -126,7 +116,7 @@ export const EnhancedConsensusAlgorithm: React.FC<EnhancedConsensusAlgorithmProp
     });
   };
 
-  const runFormalVerification = async () => {
+  const runFormalVerification = useCallback(async () => {
     if (!proposal || !evaluations) return;
 
     setVerificationState(prev => ({ ...prev, isVerifying: true }));
@@ -155,7 +145,17 @@ export const EnhancedConsensusAlgorithm: React.FC<EnhancedConsensusAlgorithmProp
         assuranceReport: `Verification error: ${err instanceof Error ? err.message : 'Unknown error'}`
       }));
     }
-  };
+  }, [proposal, evaluations, assuranceService]);
+
+  useEffect(() => {
+    loadProposalAndEvaluations();
+  }, [loadProposalAndEvaluations]);
+
+  useEffect(() => {
+    if (proposal && evaluations) {
+      runFormalVerification();
+    }
+  }, [proposal, evaluations, runFormalVerification]);
 
   const handleAutomaticTimeout = async (action?: 'accept' | 'reject' | 'wait' | 'timeout') => {
     if (!proposal || action !== 'timeout') return;

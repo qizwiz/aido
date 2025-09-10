@@ -40,8 +40,7 @@ import {
   Timestamp,
   AgentCount,
   FormalProperty,
-  RiskLevel,
-  VerificationStatusCode
+  RiskLevel
 } from './FormalVerificationEnhanced';
 
 import { Evaluation, Proposal } from './DatabaseService';
@@ -802,7 +801,7 @@ export class ConstitutionalAISafetyVerifier {
     return `Beneficence theorem: ∀ evaluation e ∈ evaluations: beneficent(e) ∧ helpful(e) ≥ threshold ∧ avg(helpfulness) = ${avgHelpfulness.toFixed(2)}`;
   }
 
-  private proveAutonomyRespect(proposal: ConstitutionalEvaluation, evaluations: ConstitutionalEvaluation[]): string {
+  private proveAutonomyRespect(_proposal: ConstitutionalEvaluation, _evaluations: ConstitutionalEvaluation[]): string {
     return `Autonomy theorem: ∀ evaluation e ∈ evaluations: respects_human_autonomy(e) ∧ preserves_choice(e)`;
   }
 
@@ -814,7 +813,7 @@ export class ConstitutionalAISafetyVerifier {
     return `Non-maleficence theorem: ∀ evaluation e ∈ evaluations: ¬causes_harm(e) ∧ avg(safety) = ${avgSafety.toFixed(2)}`;
   }
 
-  private generateFormalSafetyProof(proposal: ConstitutionalEvaluation, evaluations: ConstitutionalEvaluation[]): string {
+  private generateFormalSafetyProof(_proposal: ConstitutionalEvaluation, _evaluations: ConstitutionalEvaluation[]): string {
     return `Constitutional AI Safety Proof: ∀ state s ∈ Constitutional_States: harmless(s) ∧ aligned(s) ∧ beneficial(s) ∧ respects_autonomy(s) ∧ ¬maleficent(s) → safe(s). Proof verified at timestamp ${Timestamp.now()}`;
   }
 

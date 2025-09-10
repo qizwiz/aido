@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { DatabaseService, Proposal, Evaluation } from '../../services/DatabaseService';
 
 interface ConsensusAlgorithmProps {
@@ -20,13 +20,9 @@ export const ConsensusAlgorithm: React.FC<ConsensusAlgorithmProps> = ({ proposal
   const [isProcessing, setIsProcessing] = useState(false);
   const [consensusReached, setConsensusReached] = useState(false);
 
-  const database = new DatabaseService();
+  const database = useMemo(() => new DatabaseService(), []);
 
-  useEffect(() => {
-    loadProposalAndEvaluations();
-  }, [proposalId]);
-
-  const loadProposalAndEvaluations = async () => {
+  const loadProposalAndEvaluations = useCallback(async () => {
     try {
       const [loadedProposal, loadedEvaluations] = await Promise.all([
         database.getProposal(proposalId),
@@ -47,7 +43,11 @@ export const ConsensusAlgorithm: React.FC<ConsensusAlgorithmProps> = ({ proposal
     } catch (err) {
       setError(`Error loading data: ${err instanceof Error ? err.message : 'Unknown error'}`);
     }
-  };
+  }, [proposalId, database]);
+
+  useEffect(() => {
+    loadProposalAndEvaluations();
+  }, [loadProposalAndEvaluations]);
 
   const calculateMetrics = (evals: Evaluation[]) => {
     const scores = evals.map(e => e.score);
