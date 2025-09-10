@@ -111,7 +111,7 @@ export class DatabaseService implements IDatabaseService {
     throw new Error('Not implemented');
   }
 
-  async getAgentWorkload(agentId: string): Promise<AgentWorkload> {
+  async getAgentWorkload(_agentId: string): Promise<AgentWorkload> {
     // In a real implementation, this would calculate from the database
     throw new Error('Not implemented');
   }

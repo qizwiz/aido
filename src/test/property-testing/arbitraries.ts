@@ -28,7 +28,6 @@ import {
   EvaluationStatus,
   VerificationStatusCode,
   RiskAssessment,
-  SystemStatus,
   
   // Advanced Conditional Types
   VerificationResult,

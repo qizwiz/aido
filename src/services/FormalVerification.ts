@@ -43,7 +43,7 @@ export interface DeadlockRisk {
 export interface VerificationResult {
   property: 'termination' | 'deadlock_freedom' | 'determinism' | 'bounded_latency' | 'fairness';
   verified: boolean;
-  counterexample?: any;
+  counterexample?: Record<string, unknown>;
   proof?: string;
 }
 

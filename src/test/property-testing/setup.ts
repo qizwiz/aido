@@ -43,6 +43,7 @@ fc.configureGlobal({
 // ===============================
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Vi {
     interface AsymmetricMatchersContaining {
       toBeValidBrandedType(): any;

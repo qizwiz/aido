@@ -29,7 +29,8 @@ import {
   ConstitutionalRulesetId,
   Timestamp,
   AgentCount,
-  ProposalId
+  ProposalId,
+  AgentId
 } from '../../services/ConstitutionalAIVerification';
 
 import { Evaluation, Proposal } from '../../services/DatabaseService';
@@ -327,7 +328,7 @@ export const ConstitutionalAIMonitoring: React.FC<ConstitutionalAIMonitoringProp
     return baseEvaluations.map(e => ({
       id: e.id,
       proposalId: ProposalId.create(proposal.id),
-      agentId: e.agentId as any, // Type assertion for demo
+      agentId: e.agentId as AgentId, // Type assertion for demo
       score: ConstitutionalScores.alignment.create(e.score), // Using alignment score as base
       alignmentScore: ConstitutionalScores.alignment.create(Math.min(e.score + Math.random() * 2, 10)),
       safetyScore: ConstitutionalScores.safety.create(Math.min(e.score + Math.random() * 1.5, 10)),

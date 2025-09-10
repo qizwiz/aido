@@ -30,18 +30,13 @@ import {
   EvaluationScore,
   AgentCount,
   Timestamp,
-  LivenessState,
-  TypedEvaluation,
-  ExhaustiveVerification
+  LivenessState
 } from '../../services/FormalVerificationEnhanced';
 
 import {
   arbitraryLivenessState,
-  arbitraryTypedEvaluation,
   arbitraryEvaluationArray,
-  arbitraryLargeScaleScenario,
-  arbitraryProposalId,
-  arbitraryAgentCount
+  arbitraryLargeScaleScenario
 } from './arbitraries';
 
 interface PerformanceMetrics {
@@ -379,10 +374,10 @@ describe('Performance Benchmarks: Property-Based Testing Framework', () => {
       
       const { metrics } = measurePerformance(() => {
         for (let i = 0; i < iterations; i++) {
-          const proposalId = ProposalId.create(`proposal-${i}`);
+          const _proposalId = ProposalId.create(`proposal-${i}`);
           const score = EvaluationScore.create(Math.random() * 10);
           const agentCount = AgentCount.create(Math.floor(Math.random() * 100) + 1);
-          const timestamp = Timestamp.create(Math.floor(Date.now() - Math.random() * 86400000));
+          const _timestamp = Timestamp.create(Math.floor(Date.now() - Math.random() * 86400000));
           
           // Validate all created types
           expect(ProposalId.isValid(`proposal-${i}`)).toBe(true);

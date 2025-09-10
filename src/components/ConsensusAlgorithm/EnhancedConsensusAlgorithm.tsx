@@ -14,7 +14,7 @@
  * This provides enterprise AI governance with mathematical certainty.
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { DatabaseService, Proposal, Evaluation } from '../../services/DatabaseService';
 import { AIDOAssuranceService } from '../../services/FormalVerification';
 
@@ -30,9 +30,14 @@ interface ConsensusMetrics {
   participationRate: number;
 }
 
+interface VerificationResult {
+  verified: boolean;
+  property: string;
+}
+
 interface FormalVerificationState {
   isVerifying: boolean;
-  verificationResults: any[];
+  verificationResults: VerificationResult[];
   deadlockRisk: {
     detected: boolean;
     riskLevel: 'low' | 'medium' | 'high';
@@ -69,8 +74,8 @@ export const EnhancedConsensusAlgorithm: React.FC<EnhancedConsensusAlgorithmProp
     recommendations: []
   });
 
-  const database = new DatabaseService();
-  const assuranceService = new AIDOAssuranceService();
+  const database = useMemo(() => new DatabaseService(), []);
+  const assuranceService = useMemo(() => new AIDOAssuranceService(), []);
 
   const loadProposalAndEvaluations = useCallback(async () => {
     try {
@@ -93,9 +98,9 @@ export const EnhancedConsensusAlgorithm: React.FC<EnhancedConsensusAlgorithmProp
     } catch (err) {
       setError(`Error loading data: ${err instanceof Error ? err.message : 'Unknown error'}`);
     }
-  }, [proposalId, database]);
+  }, [proposalId, database, calculateMetrics]);
 
-  const calculateMetrics = (evals: Evaluation[]) => {
+  const calculateMetrics = useCallback((evals: Evaluation[]) => {
     const scores = evals.map(e => e.score);
     const average = scores.reduce((a, b) => a + b, 0) / scores.length;
     
@@ -114,7 +119,7 @@ export const EnhancedConsensusAlgorithm: React.FC<EnhancedConsensusAlgorithmProp
       scoreVariance,
       participationRate: Math.round((scores.length / totalAgents) * 100)
     });
-  };
+  }, [totalAgents]);
 
   const runFormalVerification = useCallback(async () => {
     if (!proposal || !evaluations) return;
@@ -145,7 +150,7 @@ export const EnhancedConsensusAlgorithm: React.FC<EnhancedConsensusAlgorithmProp
         assuranceReport: `Verification error: ${err instanceof Error ? err.message : 'Unknown error'}`
       }));
     }
-  }, [proposal, evaluations, assuranceService]);
+  }, [proposal, evaluations, assuranceService, handleAutomaticTimeout, totalAgents]);
 
   useEffect(() => {
     loadProposalAndEvaluations();
@@ -157,7 +162,7 @@ export const EnhancedConsensusAlgorithm: React.FC<EnhancedConsensusAlgorithmProp
     }
   }, [proposal, evaluations, runFormalVerification]);
 
-  const handleAutomaticTimeout = async (action?: 'accept' | 'reject' | 'wait' | 'timeout') => {
+  const handleAutomaticTimeout = useCallback(async (action?: 'accept' | 'reject' | 'wait' | 'timeout') => {
     if (!proposal || action !== 'timeout') return;
 
     setIsProcessing(true);
@@ -178,7 +183,7 @@ export const EnhancedConsensusAlgorithm: React.FC<EnhancedConsensusAlgorithmProp
     } finally {
       setIsProcessing(false);
     }
-  };
+  }, [proposalId, database, metrics, proposal]);
 
   const calculateConsensus = async () => {
     if (!metrics || !proposal) return;

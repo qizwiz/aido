@@ -19,7 +19,7 @@
  * @version 1.0.0
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import {
   ConstitutionalAILivenessMonitor,
   ConstitutionalAISafetyVerifier,
@@ -29,11 +29,6 @@ import {
   ConstitutionalEvaluation,
   ConstitutionalRules,
   ConstitutionalRulesetId,
-  AlignmentScore,
-  SafetyScore,
-  HarmlessnessScore,
-  HelpfulnessScore,
-  HonestyScore,
   AgentId
 } from './ConstitutionalAIVerification';
 

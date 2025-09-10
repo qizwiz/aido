@@ -27,22 +27,16 @@ import {
   AgentCount,
   Timestamp,
   LivenessState,
-  TypedEvaluation,
-  EvaluationStatus,
-  ValidTransition,
-  ExhaustiveVerification
+  ValidTransition
 } from '../../services/FormalVerificationEnhanced';
 
 import {
   arbitraryProposalId,
-  arbitraryEvaluationScore,
   arbitraryAgentCount,
-  arbitraryTimestamp,
   arbitraryLivenessState,
   arbitraryTypedEvaluation,
   arbitraryEvaluationArray,
   arbitraryValidStateTransition,
-  arbitraryEvaluationStatus,
   arbitraryLargeScaleScenario
 } from './arbitraries';
 
@@ -98,12 +92,12 @@ describe('State Machine Property Tests: Termination & Deadlock Prevention', () =
       // The ValidTransition type should prevent invalid transitions at compile time
       
       // These should be valid at type level:
-      type ValidPendingToEvaluating = ValidTransition<'pending', 'evaluating'>;
-      type ValidEvaluatingToDecided = ValidTransition<'evaluating', 'decided'>;
+      type _ValidPendingToEvaluating = ValidTransition<'pending', 'evaluating'>;
+      type _ValidEvaluatingToDecided = ValidTransition<'evaluating', 'decided'>;
       
       // These should be 'never' at type level (invalid transitions):
-      type InvalidDecidedToPending = ValidTransition<'decided', 'pending'>;
-      type InvalidPendingToDecided = ValidTransition<'pending', 'decided'>;
+      type _InvalidDecidedToPending = ValidTransition<'decided', 'pending'>;
+      type _InvalidPendingToDecided = ValidTransition<'pending', 'decided'>;
       
       // Runtime validation that type system works correctly
       expect(true).toBe(true); // Test passes if types compile correctly

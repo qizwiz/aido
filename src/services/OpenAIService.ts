@@ -10,19 +10,19 @@ export interface IOpenAIService {
 export class OpenAIService implements IOpenAIService {
   constructor(private apiKey: string) {}
 
-  async generateProposal(topic: string, specialty: string): Promise<string> {
+  async generateProposal(_topic: string, _specialty: string): Promise<string> {
     // In a real implementation, this would call the OpenAI API
     throw new Error('Not implemented');
   }
 
-  async evaluateProposal(content: string): Promise<{ score: number; explanation: string }> {
+  async evaluateProposal(_content: string): Promise<{ score: number; explanation: string }> {
     // In a real implementation, this would call the OpenAI API
     throw new Error('Not implemented');
   }
 
   async matchTask(
-    description: string,
-    agents: Array<{ id: string; specialty: string }>
+    _description: string,
+    _agents: Array<{ id: string; specialty: string }>
   ): Promise<{ agentId: string; explanation: string }> {
     // In a real implementation, this would call the OpenAI API
     throw new Error('Not implemented');

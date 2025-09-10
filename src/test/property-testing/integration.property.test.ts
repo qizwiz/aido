@@ -31,14 +31,10 @@ import {
   AgentCount,
   Timestamp,
   LivenessState,
-  TypedEvaluation,
-  ExhaustiveVerification
+  TypedEvaluation
 } from '../../services/FormalVerificationEnhanced';
 
 import {
-  arbitraryProposalId,
-  arbitraryEvaluationScore,
-  arbitraryAgentCount,
   arbitraryLivenessState,
   arbitraryEvaluationArray,
   arbitraryConsensusScenario,
@@ -46,11 +42,9 @@ import {
 } from './arbitraries';
 
 import { 
-  performanceMonitor, 
   runPropertyTest, 
   createPropertyTest, 
-  validateMemoryUsage, 
-  debugUtils 
+  validateMemoryUsage
 } from './setup';
 
 describe('Property-Based Integration Tests: Complete AIDO System', () => {
@@ -72,7 +66,7 @@ describe('Property-Based Integration Tests: Complete AIDO System', () => {
         'Complete Consensus Workflow',
         arbitraryConsensusScenario(),
         async (scenario) => {
-          const { state, evaluations, expectedDecision } = scenario;
+          const { state, evaluations, expectedDecision: _expectedDecision } = scenario;
           
           // Step 1: Verify individual properties
           const livenessResults = monitor.verifyLivenessProperties(state, evaluations);
@@ -199,7 +193,7 @@ describe('Property-Based Integration Tests: Complete AIDO System', () => {
         async ([state, evaluations]) => {
           // Get results from monitor
           const monitorResults = monitor.verifyLivenessProperties(state, evaluations);
-          const monitorReport = monitor.generateAssuranceReport(state, evaluations);
+          const _monitorReport = monitor.generateAssuranceReport(state, evaluations);
           const deadlockRisk = monitor.detectDeadlockRisk(state);
           
           // Get results from service
@@ -320,7 +314,7 @@ describe('Property-Based Integration Tests: Complete AIDO System', () => {
           const {
             organizationSize,
             participationRate,
-            consensusThreshold,
+            consensusThreshold: _consensusThreshold,
             evaluationTimespan,
             complexityLevel
           } = config;
@@ -417,7 +411,7 @@ describe('Property-Based Integration Tests: Complete AIDO System', () => {
           escalationThreshold: fc.double({ min: 0.5, max: 0.8 })
         }),
         async (config) => {
-          const { stages, agentsPerStage, escalationThreshold } = config;
+          const { stages, agentsPerStage, escalationThreshold: _escalationThreshold } = config;
           const totalAgents = stages * agentsPerStage;
           
           // Simulate multi-stage consensus process
@@ -551,8 +545,8 @@ describe('Property-Based Integration Tests: Complete AIDO System', () => {
           const state = fc.sample(arbitraryLivenessState(), 1)[0];
           const evaluations = fc.sample(arbitraryEvaluationArray(), 1)[0];
           
-          const results = monitor.verifyLivenessProperties(state, evaluations);
-          const report = monitor.generateAssuranceReport(state, evaluations);
+          const _results = monitor.verifyLivenessProperties(state, evaluations);
+          const _report = monitor.generateAssuranceReport(state, evaluations);
           
           // Force garbage collection opportunity
           if (i % 10 === 0) {

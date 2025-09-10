@@ -20,9 +20,7 @@ import {
   
   // Template Literal Types
   FormalProperty,
-  VerificationState,
   RiskLevel,
-  EvaluationStatus,
   VerificationStatusCode,
   RiskAssessment,
   SystemStatus,
@@ -60,7 +58,7 @@ describe('Branded Types for Domain Safety', () => {
     it('should have proper type branding', () => {
       const id = ProposalId.create('test');
       // @ts-expect-error - should not be assignable to regular string
-      const str: string = id;
+      const _str: string = id;
       
       // But can be used as string in context
       expectTypeOf(id).toMatchTypeOf<string>();
@@ -249,11 +247,11 @@ describe('Enhanced Interface Integration', () => {
 
 describe('Service Class Integration', () => {
   let monitor: EnhancedAIDOLivenessMonitor;
-  let service: EnhancedAIDOAssuranceService;
+  let _service: EnhancedAIDOAssuranceService;
 
   beforeEach(() => {
     monitor = new EnhancedAIDOLivenessMonitor();
-    service = new EnhancedAIDOAssuranceService();
+    _service = new EnhancedAIDOAssuranceService();
   });
 
   describe('EnhancedAIDOLivenessMonitor', () => {
@@ -329,12 +327,12 @@ describe('Service Class Integration', () => {
 
 describe('Runtime Type Safety Integration Tests', () => {
   it('should validate branded type construction in real usage', () => {
-    const proposalId = ProposalId.create('real-proposal-123');
+    const _proposalId = ProposalId.create('real-proposal-123');
     const score = EvaluationScore.create(8.5);
     const agentCount = AgentCount.create(10);
 
     // These should work - branded types can be used as their base types
-    const idLength: number = proposalId.length;
+    const idLength: number = _proposalId.length;
     const scoreValue: number = score + 1;
     const countValue: number = agentCount * 2;
 
@@ -344,12 +342,12 @@ describe('Runtime Type Safety Integration Tests', () => {
   });
 
   it('should prevent mixing of different branded types', () => {
-    const proposalId = ProposalId.create('test');
+    const _proposalId = ProposalId.create('test');
     const agentId = 'agent-123' as AgentId;
 
     // This should be caught by TypeScript (would be runtime error in JS)
     // @ts-expect-error - Cannot assign AgentId to ProposalId
-    const mixed: ProposalId = agentId;
+    const _mixed: ProposalId = agentId;
   });
 
   it('should maintain type safety through service methods', () => {

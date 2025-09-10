@@ -25,38 +25,27 @@ import fc from 'fast-check';
 import {
   EnhancedAIDOLivenessMonitor,
   EnhancedAIDOAssuranceService,
-  ProposalId,
   EvaluationScore,
-  AgentCount,
   Timestamp,
-  LivenessState,
-  TypedEvaluation,
-  ExhaustiveVerification
+  LivenessState
 } from '../../services/FormalVerificationEnhanced';
 
 import {
   arbitraryProposalId,
-  arbitraryEvaluationScore,
   arbitraryAgentCount,
-  arbitraryTimestamp,
   arbitraryLivenessState,
   arbitraryTypedEvaluation,
   arbitraryEvaluationArray,
-  arbitraryConsensusScenario,
-  arbitraryTerminationResult,
-  arbitraryDeadlockFreedomResult,
-  arbitraryBoundedLatencyResult,
-  arbitraryFairnessResult,
-  arbitraryDeterminismResult
+  arbitraryConsensusScenario
 } from './arbitraries';
 
 describe('Property-Based Tests: AIDO Formal Verification', () => {
   let monitor: EnhancedAIDOLivenessMonitor;
-  let service: EnhancedAIDOAssuranceService;
+  let _service: EnhancedAIDOAssuranceService;
 
   beforeEach(() => {
     monitor = new EnhancedAIDOLivenessMonitor();
-    service = new EnhancedAIDOAssuranceService();
+    _service = new EnhancedAIDOAssuranceService();
   });
 
   // ===============================
@@ -493,7 +482,7 @@ describe('Property-Based Tests: AIDO Formal Verification', () => {
           
           if (evaluations.length > 0) {
             const averageScore = evaluations.reduce((sum, e) => sum + e.score, 0) / evaluations.length;
-            const shouldAccept = averageScore >= 7.0;
+            const _shouldAccept = averageScore >= 7.0;
             
             // This property tests the mathematical consistency of threshold application
             if (state.evaluationCount >= state.totalAgents) {

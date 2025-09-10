@@ -9,7 +9,7 @@ interface ModuleExports {
 // Helper function to simulate edge function request
 async function simulateEdgeFunction(functionBody: string, request: Request): Promise<Response> {
   // Create a mock Deno.serve function that returns the handler
-  const serve = (handler: EdgeHandler): EdgeHandler => handler;
+  const _serve = (handler: EdgeHandler): EdgeHandler => handler;
 
   // Create a temporary module with our serve mock
   const moduleExports: ModuleExports = { handler: null };

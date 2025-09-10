@@ -41,6 +41,7 @@ export type Timestamp = Brand<number, 'Timestamp'>;
 export type AgentCount = Constrained<number, { min: 1 }> & Brand<number, 'AgentCount'>;
 
 // Type-safe constructors with validation
+// eslint-disable-next-line no-redeclare
 export const ProposalId = {
   create: (id: string): ProposalId => {
     if (!id || id.trim().length === 0) {
@@ -54,6 +55,7 @@ export const ProposalId = {
   }
 };
 
+// eslint-disable-next-line no-redeclare
 export const EvaluationScore = {
   create: (score: number): EvaluationScore => {
     if (score < 0 || score > 10 || !Number.isFinite(score)) {
@@ -67,6 +69,7 @@ export const EvaluationScore = {
   }
 };
 
+// eslint-disable-next-line no-redeclare
 export const AgentCount = {
   create: (count: number): AgentCount => {
     if (count < 1 || !Number.isInteger(count)) {
@@ -80,6 +83,7 @@ export const AgentCount = {
   }
 };
 
+// eslint-disable-next-line no-redeclare
 export const Timestamp = {
   create: (time: number): Timestamp => {
     if (!Number.isInteger(time) || time < 0) {
